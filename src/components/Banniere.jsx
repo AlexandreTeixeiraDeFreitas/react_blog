@@ -10,6 +10,7 @@ function Banniere({ name }){
             <Link to="/">Accueil</Link>
             <Link to="/liste_users">Liste de Users</Link>
             <Link to="/form_blog">ajout post</Link>
+            <Link to="/todolist">todo liste</Link>
         </div>
     )
 }
