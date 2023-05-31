@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { v4 as uuidv4 } from 'uuid'; // Importation de uuidv4
 import "../styles/TodoList.css";
 
 const TodoList = () => {
@@ -31,7 +32,7 @@ const TodoList = () => {
   const handleAddTask = () => {
     if (newTask.trim() !== '') {
       const task = {
-        id: Date.now(),
+        id: uuidv4(), // Utilisation de uuidv4 pour générer un identifiant unique
         title: newTask,
         description: newTaskDescription,
         completed: false,
