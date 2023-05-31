@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import "../styles/TodoList.css";
 
 const TodoList = () => {
@@ -9,11 +11,10 @@ const TodoList = () => {
   useEffect(() => {
     const storedTasks = localStorage.getItem('tasks');
     if (storedTasks && Array.isArray(JSON.parse(storedTasks)) && JSON.parse(storedTasks).length > 0) {
-        console.log('storedTasks: '+storedTasks);
-        setTasks(JSON.parse(storedTasks));
+      console.log('storedTasks: '+storedTasks);
+      setTasks(JSON.parse(storedTasks));
     }
   }, []);
-  
 
   useEffect(() => {
     localStorage.setItem('tasks', JSON.stringify(tasks));
@@ -38,11 +39,29 @@ const TodoList = () => {
       setTasks(prevTasks => [...prevTasks, task]);
       setNewTask('');
       setNewTaskDescription('');
+      toast.success('Tâche ajoutée avec succès', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined
+      });
     }
   };
 
   const handleDeleteTask = (taskId) => {
     setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
+    toast.error('Tâche supprimée avec succès', {
+      position: "top-center",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined
+    });
   };
 
   const handleToggleComplete = (taskId) => {
@@ -87,6 +106,7 @@ const TodoList = () => {
           </li>
         ))}
       </ul>
+      <ToastContainer />
     </div>
   );
 };
