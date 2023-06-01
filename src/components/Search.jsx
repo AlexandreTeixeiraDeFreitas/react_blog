@@ -26,6 +26,7 @@ const Search = () => {
     try {
       const response = await axios.get(apiUrl);
       const { name, sys, main, wind } = response.data;
+      console.log(response.data);
       const cityData = {
         name,
         postalCode: sys.country,

@@ -4,20 +4,14 @@ import axios from 'axios';
 import "../styles/Meteo.css";
 import MeteoCard from './MeteoCard';
 
-
 const Meteo = () => {
   const [cities, setCities] = useState([]);
 
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const citiesData = await Promise.all([
-          getCityWeather('Paris'),
-          getCityWeather('London'),
-          getCityWeather('New York'),
-          getCityWeather('Tokyo'),
-          getCityWeather('Sydney')
-        ]);
+        const cityNames = ['Paris', 'London', 'New York', 'Tokyo', 'Sydney']; // Ajoutez ici les noms des villes souhaitées
+        const citiesData = await getWeatherDataForCities(cityNames);
         setCities(citiesData);
       } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -27,13 +21,20 @@ const Meteo = () => {
     fetchWeatherData();
   }, []);
 
-  const getCityWeather = async (cityName) => {
+  const getWeatherDataForCities = async (cityNames) => {
     const apiKey = import.meta.env.VITE_APP_API_KEY;
+    const promises = cityNames.map(cityName => getCityWeather(cityName, apiKey));
+    const citiesData = await Promise.all(promises);
+    return citiesData.filter(cityData => cityData !== null);
+  };
+
+  const getCityWeather = async (cityName, apiKey) => {
     const apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
 
     try {
       const response = await axios.get(apiUrl);
       const { name, sys, main, wind } = response.data;
+      console.log(response.data);
       const cityData = {
         name,
         postalCode: sys.country,

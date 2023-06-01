@@ -12,7 +12,9 @@ const History = () => {
   useEffect(() => {
     const fetchWeatherData = async () => {
       try {
-        const citiesData = await getAllCitiesWeather(searchHistory);
+        const apiKey = import.meta.env.VITE_APP_API_KEY;
+        const promises = searchHistory.map(cityName => getCityWeather(cityName, apiKey));
+        const citiesData = await Promise.all(promises);
         setCitiesData(citiesData);
       } catch (error) {
         console.error('Error fetching weather data:', error);
@@ -20,19 +22,7 @@ const History = () => {
     };
 
     fetchWeatherData();
-  }, [searchHistory]);
-
-  const getAllCitiesWeather = async (cityNames) => {
-    const apiKey = import.meta.env.VITE_APP_API_KEY;
-    const citiesData = [];
-
-    for (const cityName of cityNames) {
-      const cityData = await getCityWeather(cityName, apiKey);
-      citiesData.push(cityData);
-    }
-
-    return citiesData;
-  };
+  }, []);
 
   const getCityWeather = async (cityName, apiKey) => {
     const apiUrl = `http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
@@ -40,6 +30,7 @@ const History = () => {
     try {
       const response = await axios.get(apiUrl);
       const { name, sys, main, wind } = response.data;
+      console.log(response.data);
       const cityData = {
         name,
         postalCode: sys.country,
