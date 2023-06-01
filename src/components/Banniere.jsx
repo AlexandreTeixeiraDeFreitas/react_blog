@@ -11,6 +11,9 @@ function Banniere({ name }){
             <Link to="/liste_users">Liste de Users</Link>
             <Link to="/form_blog">ajout post</Link>
             <Link to="/todolist">todo liste</Link>
+            <Link to="/meteo">méteo</Link>
+            <Link to="/search">Search ville</Link>
+            <Link to="/history">historique méteo</Link>
         </div>
     )
 }
